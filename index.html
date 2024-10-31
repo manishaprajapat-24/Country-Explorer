@@ -3,132 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manisha Prajapat - Portfolio</title>
-    <link rel="stylesheet" href="styile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="script.js" defer></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <title>Country Explorer</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-     <div class="head-section">
-        <h2 class="logo"><span>My</span> Portfolio</h2>
-        <nav>
-            <ul class="nav">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li> 
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-     </div>
-</header>
+    <header>
+        <h1>Country Explorer</h1>
+        <div id="search-container">
+            <input type="text" id="search" placeholder="Search for a country..." />
+            <button id="search-button">Search</button>
+        </div>
+    </header>
 
-<section id="home" class="hero-section">
-    <div class="name">
-        <div class="left">
-            <h2 class="uppercase">I'M <span>Manisha</span> Prajapat</h2>
-            <h3 class="my-t-10">Web Developer</h3>
-            <p class="my-t-11">"Have no fear of <span>perfection</span>—you'll never reach it."</p>
-        </div>
-        <div class="right">
-            <img src="image.jpg" alt="Manisha Prajapat" class="profile-img">
-        </div>
-    </div>
-</section>
-
-<section id="about">
-    <h2>About Me</h2>
-    <div class="container">
-        <h3>Hi..</h3>
-        <h4>I'M Manisha Prajapat</h4>
-        <p>Welcome to my portfolio! I am a dedicated software developer at <a href="https://www.navgurukul.org/" target="_blank"><span>Navgurukul</span></a> with a strong foundation in web development, specializing in front-end technologies like HTML, CSS, and JavaScript.</p>
-        <p>With a knack for problem-solving and a creative mindset, I enjoy building intuitive and user-friendly web applications. My experience includes creating practical, hands-on projects such as calculators, games, and trackers that showcase my attention to detail and love for coding.</p>
-        <p>I’m a lifelong learner who believes in the power of technology to drive positive change, and I constantly strive to enhance my skills through new challenges and projects. My goal is to combine technical knowledge with creativity to deliver effective and innovative solutions.</p>
-        <p>When I'm not coding, you’ll find me exploring new technologies, reading about AI advancements, or contributing to open-source projects to stay updated and broaden my skills.</p>
-        <section id="resume">
-            <h2>Resume</h2>
-            <p>You can download my resume from the link below:</p>
-            <a href="https://drive.google.com/file/d/1gydIFpAtrs7zcX0oELbTah_4tpvabdgI/view?usp=sharing" target="_blank" class="Resume">Download Resume</a>
-        </section>
-    </div>
-</section>
-
-<section id="experience">
-    <h2>Experience</h2>
-    <div class="container-1">
-        <h3>Employee: Manisha Prajapat</h3>
-        <h4>Company: Sagar Communication, Ujjain</h4>
-        <h4>Position: Accountant and Data Operator</h4>
-        <h4>Tenure: January 20, 2023 – January 26, 2024</h4>
-        <h5>Responsibilities:</h5>
-        <p>Managed financial transactions, ensured accurate bookkeeping, and demonstrated strong organizational skills.</p>
-    </div>
-</section>
-<section id="projects">
-    <h2>My Projects</h2>
-    <div class="project-container">
-        <div class="project">
-            <h3>Calculator</h3>
-            <p>The Calculator Project is an easy-to-use web application developed using HTML, CSS, and JavaScript, enabling users to carry out essential arithmetic operations like addition, subtraction, multiplication, and division. Its straightforward design ensures a smooth user experience, making it an efficient tool for quick calculations in daily tasks..</p>
-            <a href="http://manishaprajapat.me/calculator-project-/" target="_blank" class="btn">View Project</a>
-        </div>
-        <div class="project">
-            <h3> Ludo-Game</h3>
-            <p>The Ludo Game Project is a digital version of the classic board game, where 2-4 players race to get their tokens home based on dice rolls. It features interactive gameplay and vibrant graphics, making it a fun, multiplayer experience.</p>
-            <a href=" http://manishaprajapat.me/Ludo-Game/" target="_blank" class="btn">View Project</a>
-        </div>
-        <div class="project">
-            <h3>Expense Tracker</h3>
-            <p>The Expenses Tracker is a user-friendly application designed to help individuals monitor and manage their spending. It allows users to log expenses, categorize them, and view summaries, providing insights into spending patterns to support budgeting and financial planning..</p>
-            <a href="http://manishaprajapat.me/expense-/" target="_blank" class="btn">View Project</a>
-        </div>
-        <div class="project">
-            <h3>Country Explorer</h3>
-            <p>The Country Explorer project is an interactive map-based application that allows users to explore countries worldwide. Users can view country details, add favorites, and manage a personalized list of favorite countries, all while utilizing local storage to maintain preferences across sessions.</p>
-            <a href=" http://manishaprajapat.me/Country-Explorer/" target="_blank" class="btn">View Project</a>
-        </div>
-     </div>
-</section>
-
-<section id="contact" class="contact">
-    <h2>Contact Me</h2>
-    <p>For inquiries, please fill out the form below or reach out to me directly:</p>
-    
-    <form action="your_form_handler_url" method="post" class="contact-form">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
-        
-        <button type="submit">Send Message</button>
-    </form>
-    
-    <h3>Or reach me at:</h3>
-    <p>Email: <a href="mail">manishaprajapat24@navgurukul.org
-    </a></p>
-</section>
+    <div id="filter-container">
+        <select id="language-filter">
+            <option value="">Filter by Language</option>
  
-
-
-<footer>
-    <div class="btn-group">
-        <a href="https://github.com/manishaprajapat-24/manishaprajapat-24" class="icon-link">
-            <i class="fab fa-github"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/manisha-prajapati1/" class="icon-link">
-            <i class="fab fa-linkedin"></i>
-        </a>
+        </select>
+        
+        <select id="region-filter">
+            <option value="">Filter by Region</option>
+         </select>
     </div>
-    <h3>Contact: 6266734350</h3>
-    <p>© 2024 Manisha Prajapat. All rights reserved.</p>
-</footer>
+
+    <main>
+        <div id="map"></div>
+        
+        <section id="country-details">
+            <h2>Country Details</h2>
+            <div id="details-content"></div>
+            <button id="add-favorite-button">Add to Favorites</button>
+            <button id="remove-favorite-button" style="display: none;">Remove from Favorites</button>
+        </section>
+        
+        <section id="favorites">
+            <h2>Favorites</h2>
+            <ul id="favorites-list"></ul>
+        </section>
+    </main>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
