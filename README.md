@@ -8,7 +8,7 @@ A web-based project for exploring countries worldwide! This application utilizes
 - **Country Search**: Search countries by name, language, or region.
 - **Country Details**: Displays key details, including capital, population, area, and language.
 - **Favorites List**: Allows users to add up to 5 favorite countries with the ability to remove them as desired.
-- - **Filters:** Filter countries by language and region.
+- **Filters:** Filter countries by language and region.
 - **Responsive Design**: Optimized for various screen sizes and devices.
 - **API Integration**: Fetches country data from RestCountries API.
 
