@@ -10,23 +10,25 @@
 <body>
     <header>
         <h1>Country Explorer</h1>
-        <div id="search-container">
-            <input type="text" id="search" placeholder="Search for a country..." />
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search for a country">
             <button id="search-button">Search</button>
+            <select id="country-dropdown" style="display: none;"></select>
         </div>
+        
     </header>
 
     <div id="filter-container">
         <select id="language-filter">
             <option value="">Filter by Language</option>
- 
         </select>
         
         <select id="region-filter">
             <option value="">Filter by Region</option>
-         </select>
+        </select>
     </div>
-
+     
+     
     <main>
         <div id="map"></div>
         
