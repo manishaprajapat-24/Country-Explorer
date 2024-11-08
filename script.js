@@ -1,29 +1,26 @@
-// API URL
 const apiURL = 'https://restcountries.com/v3.1';
+const map = L.map('map').setView([20, 0], 2);
+let countriesData = [];
+let markers = []; // it is Store all markers to manage them
 
- const map = L.map('map').setView([20, 0], 2);
-
- L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-let countriesData = [];
-
- async function loadCountriesOnMap() {
+async function loadCountriesOnMap() {
     try {
         const response = await fetch(`${apiURL}/all`);
         countriesData = await response.json();
-
-        populateFilters(); 
+        populateFilters();
 
         countriesData.forEach(country => {
             const latlng = country.latlng;
             if (latlng) {
                 const marker = L.marker(latlng).addTo(map);
                 marker.bindPopup(country.name.common);
-
-                 marker.on('click', () => showCountryDetails(country));
+                marker.on('click', () => showCountryDetails(country));
+                markers.push({ country, marker }); // Store the marker with its country data
             }
         });
     } catch (error) {
@@ -31,21 +28,80 @@ let countriesData = [];
     }
 }
 
- function populateFilters() {
+const searchBox = document.getElementById("search");
+const countryDropdown = document.getElementById("country-dropdown");
+
+// Populate dropdown with all countries on load
+function populateDropdown(countries) {
+    countryDropdown.innerHTML = ""; // it is Clear previous options
+    countries.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country.name.common;
+        option.textContent = country.name.common;
+        countryDropdown.appendChild(option);
+    });
+}
+
+ // Filter dropdown as user types, filtering by starting letter only
+searchBox.addEventListener("input", () => {
+    const query = searchBox.value.toLowerCase();
+    if (query) {
+        // Filter countries by names starting with the query
+        const matchingCountries = countriesData.filter(country =>
+            country.name.common.toLowerCase().startsWith(query)
+        );
+
+        // Populate dropdown with matching countries
+        populateDropdown(matchingCountries);
+        
+        // Display the dropdown if there are matches, otherwise hide it
+        countryDropdown.style.display = matchingCountries.length > 0 ? "block" : "none";
+    } else {
+        // Hide dropdown if search box is empty
+        countryDropdown.style.display = "none";
+    }
+});
+
+// Function to populate dropdown options
+function populateDropdown(countries) {
+    countryDropdown.innerHTML = ""; // Clear previous options
+    countries.forEach(country => {
+        const option = document.createElement("option");
+        option.value = country.name.common;
+        option.textContent = country.name.common;
+        countryDropdown.appendChild(option);
+    });
+}
+
+// Listen for selection in the dropdown
+countryDropdown.addEventListener("change", () => {
+    searchBox.value = countryDropdown.value; // Update search box with selected value
+    searchCountries(); // Trigger search
+    countryDropdown.style.display = "none"; // Hide dropdown after selection
+});
+
+// Hide dropdown when clicking outside
+document.addEventListener("click", (event) => {
+    if (!searchBox.contains(event.target) && !countryDropdown.contains(event.target)) {
+        countryDropdown.style.display = "none";
+    }
+});
+
+
+function populateFilters() {
     const languageSet = new Set();
     const regionSet = new Set();
     
     countriesData.forEach(country => {
-         if (country.languages) {
+        if (country.languages) {
             Object.values(country.languages).forEach(lang => languageSet.add(lang));
         }
-        
-         if (country.region) {
+        if (country.region) {
             regionSet.add(country.region);
         }
     });
 
-     const languageFilter = document.getElementById("language-filter");
+    const languageFilter = document.getElementById("language-filter");
     languageSet.forEach(lang => {
         const option = document.createElement("option");
         option.value = lang;
@@ -53,7 +109,7 @@ let countriesData = [];
         languageFilter.appendChild(option);
     });
 
-     const regionFilter = document.getElementById("region-filter");
+    const regionFilter = document.getElementById("region-filter");
     regionSet.forEach(region => {
         const option = document.createElement("option");
         option.value = region;
@@ -62,7 +118,7 @@ let countriesData = [];
     });
 }
 
- function showCountryDetails(country) {
+function showCountryDetails(country) {
     const detailsContent = document.getElementById("details-content");
     detailsContent.innerHTML = `
         <h3>${country.name.common}</h3>
@@ -74,7 +130,7 @@ let countriesData = [];
         <img src="${country.flags.svg}" alt="Flag of ${country.name.common}" style="width: 100px; border: 1px solid #ccc;"/>
     `;
 
-     const favoriteCountries = getFavoriteCountries();
+    const favoriteCountries = getFavoriteCountries();
     const addFavoriteButton = document.getElementById("add-favorite-button");
     const removeFavoriteButton = document.getElementById("remove-favorite-button");
 
@@ -86,118 +142,107 @@ let countriesData = [];
         removeFavoriteButton.style.display = 'none';
     }
 
-     addFavoriteButton.onclick = () => addToFavorites(country.name.common);
+    addFavoriteButton.onclick = () => addToFavorites(country.name.common);
     removeFavoriteButton.onclick = () => removeFromFavorites(country.name.common);
 }
 
- function getFavoriteCountries() {
+function getFavoriteCountries() {
     const favorites = localStorage.getItem('favorites');
     return favorites ? JSON.parse(favorites) : [];
 }
 
- function addToFavorites(countryName) {
-    const favorites = getFavoriteCountries();
-    if (!favorites.includes(countryName)) {
-        favorites.push(countryName);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        alert(`${countryName} added to favorites!`);
-        displayFavorites();
-        showCountryDetails(countriesData.find(country => country.name.common === countryName)); // Update details
-    }
-}
-
- function removeFromFavorites(countryName) {
-    let favorites = getFavoriteCountries();
-    favorites = favorites.filter(name => name !== countryName);
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    alert(`${countryName} removed from favorites!`);
-    displayFavorites(); // Refresh the favorites display
-    showCountryDetails(countriesData.find(country => country.name.common === countryName)); // Update details
-}
-
- function searchCountries() {
-    const query = document.getElementById('search').value.toLowerCase();
-    const selectedLanguage = document.getElementById('language-filter').value;
-    const selectedRegion = document.getElementById('region-filter').value;
-
-    const filteredCountries = countriesData.filter(country => {
-        const matchesQuery = country.name.common.toLowerCase().includes(query);
-        
-         const matchesLanguage = selectedLanguage
-            ? Object.values(country.languages || {}).includes(selectedLanguage)
-            : true;
-
-         const matchesRegion = selectedRegion ? country.region === selectedRegion : true;
-
-        return matchesQuery && matchesLanguage && matchesRegion;
-    });
-
-     map.eachLayer((layer) => {
-        if (layer instanceof L.Marker) {
-            map.removeLayer(layer);
-        }
-    });
-
-    filteredCountries.forEach(country => {
-        const latlng = country.latlng;
-        if (latlng) {
-            const marker = L.marker(latlng).addTo(map);
-            marker.bindPopup(country.name.common);
-            marker.on('click', () => showCountryDetails(country));
-        }
-    });
-}
-
- document.getElementById('search-button').addEventListener('click', searchCountries);
-
- document.getElementById('search').addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        searchCountries();
-    }
-});
-
- document.getElementById('language-filter').addEventListener('change', function() {
-    if (this.value) {
-        document.getElementById('region-filter').value = "";
-    }
-});
-
-document.getElementById('region-filter').addEventListener('change', function() {
-    if (this.value) {
-        document.getElementById('language-filter').value = "";
-    }
-});
- function addToFavorites(countryName) {
+function addToFavorites(countryName) {
     const favorites = getFavoriteCountries();
     if (!favorites.includes(countryName)) {
         if (favorites.length < 5) {
             favorites.push(countryName);
             localStorage.setItem('favorites', JSON.stringify(favorites));
             alert(`${countryName} added to favorites!`);
-            displayFavorites(); 
-            showCountryDetails(countriesData.find(country => country.name.common === countryName)); // Update details
+            displayFavorites();
+            showCountryDetails(countriesData.find(country => country.name.common === countryName));
         } else {
             alert("You can only select up to 5 favorite countries.");
         }
     }
 }
- function displayFavorites() {
+
+function removeFromFavorites(countryName) {
+    let favorites = getFavoriteCountries();
+    favorites = favorites.filter(name => name !== countryName);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    alert(`${countryName} removed from favorites.`);
+    displayFavorites();
+    showCountryDetails(countriesData.find(country => country.name.common === countryName));
+}
+
+function displayFavorites() {
     const favoritesList = document.getElementById("favorites-list");
-    favoritesList.innerHTML = ''; 
+    favoritesList.innerHTML = '';
+    getFavoriteCountries().forEach(countryName => {
+        const li = document.createElement("li");
+        li.textContent = countryName;
 
-    const favoriteCountries = getFavoriteCountries();
-    favoriteCountries.forEach(countryName => {
-        const listItem = document.createElement('li');
-        listItem.textContent = countryName;
-
-         const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
         removeButton.onclick = () => removeFromFavorites(countryName);
 
-        listItem.appendChild(removeButton);
-        favoritesList.appendChild(listItem);
+        li.appendChild(removeButton);
+        favoritesList.appendChild(li);
     });
 }
 
- loadCountriesOnMap();
-displayFavorites(); 
+
+
+document.getElementById("search-button").onclick = () => searchCountries();
+document.getElementById("language-filter").onchange = filterCountries;
+document.getElementById("region-filter").onchange = filterCountries;
+
+async function searchCountries() {
+    const query = document.getElementById("search").value.toLowerCase();
+    const result = countriesData.find(country => country.name.common.toLowerCase() === query);
+
+    if (result) {
+        // Clear all previous markers
+        markers.forEach(({ marker }) => map.removeLayer(marker));
+
+        // Add only the searched country's marker
+        const latlng = result.latlng;
+        if (latlng) {
+            const marker = L.marker(latlng).addTo(map);
+            marker.bindPopup(result.name.common).openPopup();
+            markers.push({ country: result, marker }); // Store the marker with its country data
+            map.setView(latlng, 5);
+            showCountryDetails(result);
+        }
+    } else {
+        alert("Country not found.");
+    }
+}
+
+function filterCountries() {
+    const selectedLanguage = document.getElementById("language-filter").value;
+    const selectedRegion = document.getElementById("region-filter").value;
+
+    //it's help to Remove all markers from the map
+    markers.forEach(({ marker }) => map.removeLayer(marker));
+
+    // Add only the filtered markers that match both filters
+    markers.forEach(({ country, marker }) => {
+        const matchesLanguage = selectedLanguage ? 
+            Object.values(country.languages || {}).includes(selectedLanguage) : true;
+        const matchesRegion = selectedRegion ? country.region === selectedRegion : true;
+
+        // If the country matches both the selected language and region, add it to the map
+        if (matchesLanguage && matchesRegion) {
+            marker.addTo(map);
+        }
+    });
+}
+
+ document.getElementById("language-filter").addEventListener("change", filterCountries);
+document.getElementById("region-filter").addEventListener("change", filterCountries);
+
+
+
+loadCountriesOnMap();
+displayFavorites();
