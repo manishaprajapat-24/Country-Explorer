@@ -9,53 +9,90 @@ body {
 }
 
 header {
-    background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20231228/pngtree-green-bubbles-texture-background-image_15561691.jpg'); 
-    background-size: cover; 
-    background-position: center;  
-    color: white;  
-    text-align: center; 
-    padding: 2rem 0;   
-    background-color: #4CAF50;
+    background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20231228/pngtree-green-bubbles-texture-background-image_15561691.jpg');
+    background-size: cover;
+    background-position: center;
     color: white;
     text-align: center;
     padding: 1rem 0;
- }
+}
 
-#search-container {
+.search-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
     display: flex;
+    align-items: center;
     justify-content: center;
-    margin-top: 10px;
 }
 
 #search {
+    width: 100%;
     padding: 10px;
-    width: 70%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
 }
 
 #search-button {
-    padding: 10px;
-    background-color: #fff;
-    color: black;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    position: absolute;
+    right: 10px;
+    top: 26%;
+    right: 1%;
+    transform: translateY(-50%);
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
     cursor: pointer;
-    margin-left: 10px;
+}
+
+#country-dropdown {
+    position: absolute;
+    text-align: left;
+    top: 100%;
+    left: 0;
+    height: 70%;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    display: none;
+    z-index: 1000;
+    box-sizing: border-box;
 }
 
 #search-button:hover {
-    background-color: #f1f1f1;
+    background-color: #264117;
+}
+
+#filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+#language-filter, #region-filter {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 main {
     display: flex;
     flex: 1;
+    flex-direction: row;
+    gap: 20px;
+    padding: 10px;
 }
 
 #map {
     flex: 2;
     height: 100%;
+    min-height: 400px;
 }
 
 #country-details {
@@ -83,6 +120,7 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
 #favorites {
     flex: 1;
     padding: 20px;
@@ -99,19 +137,15 @@ button:hover {
 #favorites-list li {
     padding: 5px;
     border-bottom: 1px solid #ccc;
-}
-#favorites-list li {
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #favorites-list li button {
-    margin-left: 10px;  
+    margin-left: 10px;
     padding: 5px 10px;
-    background-color: #f44336;  
+    background-color: #f44336;
     color: white;
     border: none;
     border-radius: 5px;
@@ -119,31 +153,93 @@ button:hover {
 }
 
 #favorites-list li button:hover {
-    background-color: #d32f2f; 
-}
-#filter-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+    background-color: #d32f2f;
 }
 
-#language-filter, #region-filter {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-@media (max-width: 600px) {
-    .remove-button {
-        width: 100%;
-        font-size: 16px;
+@media (max-width: 1200px) {
+    #search-container {
+        flex-direction: column;
+        gap: 5px;
     }
 }
 
-#favorites-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 400px;
-    margin: auto;
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    #map {
+        order: 1;
+        height: 300px;
+    }
+
+    #country-details, #favorites {
+        order: 2;
+        flex: 1;
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    header {
+        padding: 1rem 0;
+        font-size: 1.2rem;
+    }
+
+    #search {
+        width: 80%;
+        font-size: 1rem;
+    }
+
+    #search-button {
+        font-size: 1rem;
+    }
+
+    #filter-container select {
+        width: 100%;
+    }
+
+    #country-details, #favorites {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    #favorites-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #favorites-list li button {
+        margin-top: 5px;
+        padding: 5px;
+    }
+}
+
+ 
+@media (max-width: 576px) {
+    
+
+    #search-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #search {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    #search-button {
+        font-size: 1rem;
+    }
+
+    #filter-container select {
+        width: 100%;
+    }
+   
 }
