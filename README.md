@@ -1,29 +1,25 @@
- Country-Explorer 🌍
-Explore countries worldwide with this interactive web application. It uses Leaflet.js for map rendering and RestCountries API for country data. You can search countries, filter by region and language using dropdowns, view details, and manage a list of your favorite countries.
+# Country Explorer
 
-Features 📌
-Interactive Map: View country markers on a world map.
-Country Search: Search by country name, region, or language.
-Country Details: Display information such as capital, population, area, and language.
-Favorites List: Add/remove up to 5 favorite countries.
-Filters: Dropdowns to filter countries by region or language.
-Responsive Design: Optimized for all devices.
-API Integration: Fetch data from RestCountries API and render the map using OpenStreetMap tiles.
-Technologies Used 💻
-HTML, CSS, JavaScript
-Leaflet.js for map rendering
-RestCountries API for country data
-OpenStreetMap for map tiles
-Setup Instructions 🚀
-Clone the Repository:
+The **Country Explorer** is an interactive web application that allows users to explore different countries around the world, view country details, and mark countries as favorites. The project uses the [Leaflet.js](https://leafletjs.com/) library for mapping and OpenStreetMap tiles, and it fetches country data from the [REST Countries API](https://restcountries.com/).
 
-bash
-Copy code
-git clone https://github.com/yourusername/country-explorer.git
-cd country-explorer
-Open the Project: Open index.html in your browser to start using the app.
+## Features
 
-Usage:
-Search: Type a country name in the search bar.
-Filters: Use dropdowns to filter countries by region or language.
-Favorites: Add/remove countries from your favorites list.
+- **Interactive Map:** View countries on a world map using Leaflet.js, with markers representing each country.
+- **Search Bar:** Type in the name of a country to search for it quickly.
+- **Filters:** Filter countries by language and region.
+- **Country Details:** Click on a country marker to view detailed information such as capital, population, area, languages, and flag.
+- **Favorites:** Add up to 5 countries to your favorites and manage them via local storage.
+
+## Technologies Used
+
+- **HTML/CSS/JavaScript**: The core technologies used to build the front-end of the application.
+- **Leaflet.js**: A JavaScript library used to create interactive maps.
+- **REST Countries API**: Provides detailed data about countries around the world.
+
+## Setup
+
+To get started with the project, follow these steps:
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/country-explorer.git
