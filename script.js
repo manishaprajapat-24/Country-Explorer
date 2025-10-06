@@ -1,7 +1,7 @@
 const apiURL = 'https://restcountries.com/v3.1';
 const map = L.map('map').setView([20, 0], 2);
 let countriesData = [];
-let markers = []; // it is Store all markers to manage them
+let markers = [];
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -15,12 +15,11 @@ async function loadCountriesOnMap() {
         populateFilters();
 
         countriesData.forEach(country => {
-            const latlng = country.latlng;
-            if (latlng) {
-                const marker = L.marker(latlng).addTo(map);
+            if (country.latlng) {
+                const marker = L.marker(country.latlng).addTo(map);
                 marker.bindPopup(country.name.common);
                 marker.on('click', () => showCountryDetails(country));
-                markers.push({ country, marker }); // Store the marker with its country data
+                markers.push({ country, marker });
             }
         });
     } catch (error) {
@@ -28,12 +27,12 @@ async function loadCountriesOnMap() {
     }
 }
 
+// Search functionality
 const searchBox = document.getElementById("search");
 const countryDropdown = document.getElementById("country-dropdown");
 
-// Populate dropdown with all countries on load
 function populateDropdown(countries) {
-    countryDropdown.innerHTML = ""; // it is Clear previous options
+    countryDropdown.innerHTML = "";
     countries.forEach(country => {
         const option = document.createElement("option");
         option.value = country.name.common;
@@ -42,66 +41,43 @@ function populateDropdown(countries) {
     });
 }
 
- // Filter dropdown as user types, filtering by starting letter only
 searchBox.addEventListener("input", () => {
     const query = searchBox.value.toLowerCase();
     if (query) {
-        // Filter countries by names starting with the query
         const matchingCountries = countriesData.filter(country =>
             country.name.common.toLowerCase().startsWith(query)
         );
-
-        // Populate dropdown with matching countries
         populateDropdown(matchingCountries);
-        
-        // Display the dropdown if there are matches, otherwise hide it
         countryDropdown.style.display = matchingCountries.length > 0 ? "block" : "none";
     } else {
-        // Hide dropdown if search box is empty
         countryDropdown.style.display = "none";
     }
 });
 
-// Function to populate dropdown options
-function populateDropdown(countries) {
-    countryDropdown.innerHTML = ""; // Clear previous options
-    countries.forEach(country => {
-        const option = document.createElement("option");
-        option.value = country.name.common;
-        option.textContent = country.name.common;
-        countryDropdown.appendChild(option);
-    });
-}
-
-// Listen for selection in the dropdown
 countryDropdown.addEventListener("change", () => {
-    searchBox.value = countryDropdown.value; // Update search box with selected value
-    searchCountries(); // Trigger search
-    countryDropdown.style.display = "none"; // Hide dropdown after selection
+    searchBox.value = countryDropdown.value;
+    searchCountries();
+    countryDropdown.style.display = "none";
 });
 
-// Hide dropdown when clicking outside
 document.addEventListener("click", (event) => {
     if (!searchBox.contains(event.target) && !countryDropdown.contains(event.target)) {
         countryDropdown.style.display = "none";
     }
 });
 
-
 function populateFilters() {
     const languageSet = new Set();
     const regionSet = new Set();
-    
+
     countriesData.forEach(country => {
-        if (country.languages) {
-            Object.values(country.languages).forEach(lang => languageSet.add(lang));
-        }
-        if (country.region) {
-            regionSet.add(country.region);
-        }
+        if (country.languages) Object.values(country.languages).forEach(lang => languageSet.add(lang));
+        if (country.region) regionSet.add(country.region);
     });
 
     const languageFilter = document.getElementById("language-filter");
+    const regionFilter = document.getElementById("region-filter");
+
     languageSet.forEach(lang => {
         const option = document.createElement("option");
         option.value = lang;
@@ -109,7 +85,6 @@ function populateFilters() {
         languageFilter.appendChild(option);
     });
 
-    const regionFilter = document.getElementById("region-filter");
     regionSet.forEach(region => {
         const option = document.createElement("option");
         option.value = region;
@@ -146,6 +121,7 @@ function showCountryDetails(country) {
     removeFavoriteButton.onclick = () => removeFromFavorites(country.name.common);
 }
 
+// Favorite Functions
 function getFavoriteCountries() {
     const favorites = localStorage.getItem('favorites');
     return favorites ? JSON.parse(favorites) : [];
@@ -159,7 +135,6 @@ function addToFavorites(countryName) {
             localStorage.setItem('favorites', JSON.stringify(favorites));
             alert(`${countryName} added to favorites!`);
             displayFavorites();
-            showCountryDetails(countriesData.find(country => country.name.common === countryName));
         } else {
             alert("You can only select up to 5 favorite countries.");
         }
@@ -172,7 +147,6 @@ function removeFromFavorites(countryName) {
     localStorage.setItem('favorites', JSON.stringify(favorites));
     alert(`${countryName} removed from favorites.`);
     displayFavorites();
-    showCountryDetails(countriesData.find(country => country.name.common === countryName));
 }
 
 function displayFavorites() {
@@ -191,26 +165,22 @@ function displayFavorites() {
     });
 }
 
-
-
+// Filters and Search
 document.getElementById("search-button").onclick = () => searchCountries();
 document.getElementById("language-filter").onchange = filterCountries;
 document.getElementById("region-filter").onchange = filterCountries;
 
-async function searchCountries() {
+function searchCountries() {
     const query = document.getElementById("search").value.toLowerCase();
     const result = countriesData.find(country => country.name.common.toLowerCase() === query);
 
     if (result) {
-        // Clear all previous markers
         markers.forEach(({ marker }) => map.removeLayer(marker));
-
-        // Add only the searched country's marker
         const latlng = result.latlng;
         if (latlng) {
             const marker = L.marker(latlng).addTo(map);
             marker.bindPopup(result.name.common).openPopup();
-            markers.push({ country: result, marker }); // Store the marker with its country data
+            markers = [{ country: result, marker }];
             map.setView(latlng, 5);
             showCountryDetails(result);
         }
@@ -223,26 +193,22 @@ function filterCountries() {
     const selectedLanguage = document.getElementById("language-filter").value;
     const selectedRegion = document.getElementById("region-filter").value;
 
-    //it's help to Remove all markers from the map
     markers.forEach(({ marker }) => map.removeLayer(marker));
 
-    // Add only the filtered markers that match both filters
-    markers.forEach(({ country, marker }) => {
-        const matchesLanguage = selectedLanguage ? 
+    countriesData.forEach(country => {
+        const matchesLanguage = selectedLanguage ?
             Object.values(country.languages || {}).includes(selectedLanguage) : true;
         const matchesRegion = selectedRegion ? country.region === selectedRegion : true;
 
-        // If the country matches both the selected language and region, add it to the map
-        if (matchesLanguage && matchesRegion) {
-            marker.addTo(map);
+        if (matchesLanguage && matchesRegion && country.latlng) {
+            const marker = L.marker(country.latlng).addTo(map);
+            marker.bindPopup(country.name.common);
+            marker.on('click', () => showCountryDetails(country));
+            markers.push({ country, marker });
         }
     });
 }
 
- document.getElementById("language-filter").addEventListener("change", filterCountries);
-document.getElementById("region-filter").addEventListener("change", filterCountries);
-
-
-
+// Initialize
 loadCountriesOnMap();
 displayFavorites();
