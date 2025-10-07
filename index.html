@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Explorer</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Country Explorer</title>
+
+   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <header>
-        <h1>Country Explorer</h1>
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search for a country">
-            <button id="search-button">Search</button>
-            <ul id="country-dropdown" style="display: none;"></ul>
-        </div>
-    </header>
-
-    <div id="filter-container">
-        <select id="language-filter">
-            <option value="">Filter by Language</option>
-        </select>
-        <select id="region-filter">
-            <option value="">Filter by Region</option>
-        </select>
+  <header>
+    <h1>Country Explorer</h1>
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Search for a country">
+      <button id="search-button">Search</button>
+      <select id="country-dropdown" style="display: none;"></select>
     </div>
+  </header>
 
-    <main>
-        <div id="map"></div>
+  <div id="filter-container">
+    <select id="language-filter">
+      <option value="">Filter by Language</option>
+    </select>
+    <select id="region-filter">
+      <option value="">Filter by Region</option>
+    </select>
+  </div>
 
-        <section id="country-details">
-            <h2>Country Details</h2>
-            <div id="details-content"></div>
-            <button id="add-favorite-button">Add to Favorites</button>
-            <button id="remove-favorite-button" style="display: none;">Remove from Favorites</button>
-        </section>
+  <main>
+    <div id="map"></div>
 
-        <section id="favorites">
-            <h2>Favorites</h2>
-            <ul id="favorites-list"></ul>
-        </section>
-    </main>
+    <section id="country-details">
+      <h2>Country Details</h2>
+      <div id="details-content"></div>
+      <button id="add-favorite-button">Add to Favorites</button>
+      <button id="remove-favorite-button" style="display: none;">Remove from Favorites</button>
+    </section>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+    <section id="favorites">
+      <h2>Favorites</h2>
+      <ul id="favorites-list"></ul>
+    </section>
+  </main>
+
+  
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+   <script src="script.js"></script>
 </body>
 </html>
