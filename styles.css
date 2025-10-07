@@ -1,48 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Explorer</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Country Explorer</h1>
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search for a country">
-            <button id="search-button">Search</button>
-            <ul id="country-dropdown" style="display: none;"></ul>
-        </div>
-    </header>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: #333;
+  background-color: #f5f5f5;
+}
 
-    <div id="filter-container">
-        <select id="language-filter">
-            <option value="">Filter by Language</option>
-        </select>
-        <select id="region-filter">
-            <option value="">Filter by Region</option>
-        </select>
-    </div>
+header {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAMN8AHv52EoYJBPx409lAVTA21aX-S5NXJg&s');
+  color: white;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-    <main>
-        <div id="map"></div>
+.search-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        <section id="country-details">
-            <h2>Country Details</h2>
-            <div id="details-content"></div>
-            <button id="add-favorite-button">Add to Favorites</button>
-            <button id="remove-favorite-button" style="display: none;">Remove from Favorites</button>
-        </section>
+#search {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #4CAF50;
+  border-radius: 30px;
+  outline: none;
+  transition: border-color 0.3s;
+}
 
-        <section id="favorites">
-            <h2>Favorites</h2>
-            <ul id="favorites-list"></ul>
-        </section>
-    </main>
+#search:focus {
+  border-color: #2E7D32;
+}
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+#search-button {
+  position: absolute;
+  right: 1%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#search-button:hover {
+  background-color: #2E7D32;
+}
+
+#country-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 50%;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+#filter-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+#language-filter,
+#region-filter {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: box-shadow 0.3s;
+}
+
+#language-filter:hover,
+#region-filter:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+main {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+}
+
+#map {
+  flex: 2;
+  height: 100%;
+  min-height: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+#country-details {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+#details-content {
+  margin-top: 20px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background-color: #
